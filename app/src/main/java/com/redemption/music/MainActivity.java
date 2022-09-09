@@ -8,9 +8,11 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.Manifest;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
 
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -30,6 +32,12 @@ public class MainActivity extends AppCompatActivity {
     public DrawerLayout drawerLayout;
     public ActionBarDrawerToggle actionBarDrawerToggle;
 
+    ListView listView;
+    String[] name = {
+            "test", "nata", "amazing"
+    };
+    ArrayAdapter<String> arrayAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +52,9 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.my_drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close);
 
-
+        listView = findViewById(R.id.listView);
+        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, name);
+        listView.setAdapter(arrayAdapter);
 
         // pass the Open and Close toggle for the drawer layout listener
         // to toggle the button
@@ -69,7 +79,29 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-//    public void runTimePermission() {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search, menu);
+        MenuItem menuItem = menu.findItem(R.id.actionSearch);
+        SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView.setQueryHint("Type here to Search");
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                arrayAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    //    public void runTimePermission() {
 //        Dexter.withContext(this).withPermission(Manifest.permission.READ_EXTERNAL_STORAGE).withListener(new PermissionListener() {
 //            @Override
 //            public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
