@@ -8,9 +8,15 @@
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/yankees_blue</item>
         <item name="colorSecondaryVariant">@color/space_cadet</item>
-        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorOnSecondary">@color/purple_navy</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@color/azureish_white</item>
+        <item name="actionBarTheme">@style/AppTheme.AppBarOverlay</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColorPrimary">@color/purple_navy</item>
     </style>
 </resources>
