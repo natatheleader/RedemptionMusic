@@ -7,6 +7,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -46,11 +47,15 @@ public class MainActivity extends AppCompatActivity {
         tabLayout = (TabLayout)findViewById(R.id.tabLayout);
         viewPager = (ViewPager)findViewById(R.id.viewPager);
 
-        tabLayout.addTab(tabLayout.newTab().setText("Home"));
-        tabLayout.addTab(tabLayout.newTab().setText("Sport"));
-        tabLayout.addTab(tabLayout.newTab().setText("Movie"));
+        tabLayout.addTab(tabLayout.newTab().setText("Playlists"));
+        tabLayout.addTab(tabLayout.newTab().setText("Artists"));
+        tabLayout.addTab(tabLayout.newTab().setText("Albums"));
+        tabLayout.addTab(tabLayout.newTab().setText("Songs"));
+        tabLayout.addTab(tabLayout.newTab().setText("Genres"));
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        tabLayout.setTabTextColors(getResources().getColor(R.color.cadet_blue), getResources().getColor(R.color.purple_navy));
 
         final TabAdapter adapter = new TabAdapter(this,getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
