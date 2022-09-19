@@ -1,11 +1,10 @@
 package com.redemption.music.Models;
 
-public class PlaylistData {
-
+public class ArtistData {
     private String title;
     private int imgId;
 
-    public PlaylistData(String title, int imgId) {
+    public ArtistData(String title, int imgId) {
         this.title = title;
         this.imgId = imgId;
     }

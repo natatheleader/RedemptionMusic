@@ -8,7 +8,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.redemption.music.Models.PlaylistData;
@@ -36,12 +35,24 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final PlaylistData newPlaylistData = playlistData[position];
-        holder.textView.setText(playlistData[position].getTitle());
-        holder.imageView.setImageResource(playlistData[position].getImgId());
-        holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
+        holder.title.setText(playlistData[position].getTitle());
+        holder.cover.setImageResource(playlistData[position].getImgId());
+        holder.play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(),"click on item: " + newPlaylistData.getTitle(), Toast.LENGTH_LONG).show();
+                Toast.makeText(view.getContext(),"play item: " + newPlaylistData.getTitle(), Toast.LENGTH_LONG).show();
+            }
+        });
+        holder.menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(),"menu item: " + newPlaylistData.getTitle(), Toast.LENGTH_LONG).show();
+            }
+        });
+        holder.cover.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(),"image item: " + newPlaylistData.getTitle(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -53,16 +64,16 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public ImageView imageView;
-        public TextView textView;
-        public ConstraintLayout constraintLayout;
+        public ImageView cover, play, menu;
+        public TextView title;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            this.imageView = (ImageView) itemView.findViewById(R.id.playlistImage);
-            this.textView = (TextView) itemView.findViewById(R.id.playlistTitle);
-            this.constraintLayout = (ConstraintLayout) itemView.findViewById(R.id.playlistLayout);
+            this.cover = (ImageView) itemView.findViewById(R.id.playlistImage);
+            this.play = (ImageView) itemView.findViewById(R.id.playlistPlay);
+            this.menu = (ImageView) itemView.findViewById(R.id.playlistMenu);
+            this.title = (TextView) itemView.findViewById(R.id.playlistTitle);
         }
     }
 }
