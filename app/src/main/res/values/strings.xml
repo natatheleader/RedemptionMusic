@@ -12,4 +12,5 @@
     <string name="menu_button">Menu Button</string>
     <string name="artist_image">Artist Image</string>
     <string name="artist_name">Artist Name</string>
+    <string name="genres_image">Genres Image</string>
 </resources>

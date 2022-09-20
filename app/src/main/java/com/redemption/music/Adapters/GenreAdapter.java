@@ -11,53 +11,53 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.redemption.music.Models.ArtistData;
-import com.redemption.music.Models.PlaylistData;
+import com.redemption.music.Models.GenresData;
 import com.redemption.music.R;
 
-public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ViewHolder> {
+public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.ViewHolder> {
 
-    private ArtistData[] artistData;
+    private GenresData[] genreData;
 
     // RecyclerView recyclerView;
-    public ArtistAdapter(ArtistData[] artistData) {
-        this.artistData = artistData;
+    public GenreAdapter(GenresData[] genreData) {
+        this.genreData = genreData;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View listItem= layoutInflater.inflate(R.layout.artist_item, parent, false);
-        ViewHolder viewHolder = new ViewHolder(listItem);
+        View listItem= layoutInflater.inflate(R.layout.genres_item, parent, false);
+        GenreAdapter.ViewHolder viewHolder = new GenreAdapter.ViewHolder(listItem);
 
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final ArtistData newArtistData = artistData[position];
-        holder.name.setText(artistData[position].getName());
-        holder.cover.setImageResource(artistData[position].getImgId());
+        final GenresData newGenreData = genreData[position];
+        holder.name.setText(genreData[position].getName());
+        holder.cover.setImageResource(genreData[position].getImgId());
         holder.play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(),"play item: " + newArtistData.getName(), Toast.LENGTH_LONG).show();
+                Toast.makeText(view.getContext(),"play item: " + newGenreData.getName(), Toast.LENGTH_LONG).show();
             }
         });
         holder.cover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(),"image item: " + newArtistData.getName(), Toast.LENGTH_LONG).show();
+                Toast.makeText(view.getContext(),"image item: " + newGenreData.getName(), Toast.LENGTH_LONG).show();
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return artistData.length;
+        return genreData.length;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView cover, play;
         public TextView name;
@@ -65,9 +65,9 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ViewHolder
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            this.cover = (ImageView) itemView.findViewById(R.id.artistImage);
-            this.play = (ImageView) itemView.findViewById(R.id.artistPlay);
-            this.name = (TextView) itemView.findViewById(R.id.artistName);
+            this.cover = (ImageView) itemView.findViewById(R.id.genreImage);
+            this.play = (ImageView) itemView.findViewById(R.id.genrePlay);
+            this.name = (TextView) itemView.findViewById(R.id.genreName);
         }
     }
 }
