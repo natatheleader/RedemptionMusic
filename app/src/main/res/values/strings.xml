@@ -13,4 +13,9 @@
     <string name="artist_image">Artist Image</string>
     <string name="artist_name">Artist Name</string>
     <string name="genres_image">Genres Image</string>
+    <string name="shuffle_all">Shuffle All</string>
+    <string name="song_cover">Song Cover</string>
+    <string name="song_title">Song Title</string>
+    <string name="like_button">Like Button</string>
+    <string name="search">search</string>
 </resources>
