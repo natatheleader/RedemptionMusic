@@ -1,5 +1,6 @@
 package com.redemption.music.Adapters;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.redemption.music.Models.PlaylistData;
+import com.redemption.music.PlayerActivity;
 import com.redemption.music.R;
 
 public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHolder> {
@@ -40,7 +42,8 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
         holder.play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(),"play item: " + newPlaylistData.getTitle(), Toast.LENGTH_LONG).show();
+                Intent myIntent = new Intent(holder.play.getContext(), PlayerActivity.class);
+                holder.play.getContext().startActivity(myIntent);
             }
         });
         holder.menu.setOnClickListener(new View.OnClickListener() {
