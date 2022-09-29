@@ -7,15 +7,27 @@ import androidx.appcompat.widget.SearchView;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 
+import android.Manifest;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 import com.redemption.music.Adapters.TabAdapter;
+import com.redemption.music.Helpers.FileManager;
+import com.redemption.music.Models.SongData;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,10 +38,14 @@ public class MainActivity extends AppCompatActivity {
     public TabLayout tabLayout;
     public ViewPager viewPager;
 
+    public SongData songData;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+//        runTimePermission();
 
         // drawer layout instance to toggle the menu icon to open
         // drawer and back button to close drawer
@@ -116,4 +132,29 @@ public class MainActivity extends AppCompatActivity {
         searchView.setQueryHint("Search ...");
         return true;
     }
+    
+//    public void runTimePermission() {
+//        Dexter.withContext(this).withPermission(Manifest.permission.READ_EXTERNAL_STORAGE).withListener(new PermissionListener() {
+//            @Override
+//            public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
+//                //Get tracks using FileManager
+//                FileManager fileManager = new FileManager(getApplicationContext());
+//                // data to populate the RecyclerView with
+//                ArrayList<SongData> tracks = (ArrayList<SongData>) fileManager.getTracks();
+//
+////                trackAdapter = new TrackAdapter(this, tracks);
+////                tracksRV.setAdapter(trackAdapter);
+//            }
+//
+//            @Override
+//            public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
+//
+//            }
+//
+//            @Override
+//            public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
+//                permissionToken.continuePermissionRequest();
+//            }
+//        }).check();
+//    }
 }

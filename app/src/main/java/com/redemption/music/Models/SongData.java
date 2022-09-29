@@ -2,13 +2,12 @@ package com.redemption.music.Models;
 
 public class SongData {
 
-    private String title, name;
-    private int imgId;
+    private String title, name, path;
 
-    public SongData(String title, String name, int imgId) {
+    public SongData(String title, String name, String Path) {
         this.title = title;
         this.name = name;
-        this.imgId = imgId;
+        this.path = path;
     }
 
     public String getTitle() {
@@ -27,11 +26,11 @@ public class SongData {
         this.name = name;
     }
 
-    public int getImgId() {
-        return imgId;
+    public String getPath() {
+        return path;
     }
 
-    public void setImgId(int imgId) {
-        this.imgId = imgId;
+    public void setPath(String path) {
+        this.path = path;
     }
 }

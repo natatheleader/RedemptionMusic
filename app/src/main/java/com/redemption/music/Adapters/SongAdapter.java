@@ -1,5 +1,10 @@
 package com.redemption.music.Adapters;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.media.MediaMetadataRetriever;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,19 +14,19 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.redemption.music.Models.PlaylistData;
+import com.bumptech.glide.Glide;
 import com.redemption.music.Models.SongData;
 import com.redemption.music.R;
 
+import java.util.ArrayList;
+
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
 
-    private SongData[] songData;
+    private ArrayList<SongData> songData;
 
-    public SongAdapter(SongData[] songData) {
+    public SongAdapter(ArrayList<SongData> songData) {
         this.songData = songData;
     }
 
@@ -37,10 +42,29 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final SongData newSongData = songData[position];
-        holder.title.setText(songData[position].getTitle());
-        holder.name.setText(songData[position].getName());
-        holder.cover.setImageResource(songData[position].getImgId());
+        final SongData newSongData = songData.get(position);
+        holder.title.setText(songData.get(position).getTitle());
+        holder.name.setText(songData.get(position).getName());
+        if (songData.get(position).getPath() != null) {
+            byte[] image = getAlbumArt(songData.get(position).getPath());
+            if (image != null) {
+                Glide.with(holder.cover.getContext()).asBitmap()
+                        .load(image)
+                        .into(holder.cover);
+            } else {
+                Glide.with(holder.cover.getContext())
+                        .load(R.drawable.playlist)
+                        .into(holder.cover);
+            }
+        } else  {
+            Glide.with(holder.cover.getContext())
+                    .load(R.drawable.playlist)
+                    .into(holder.cover);
+        }
+//        Drawable img = Drawable.createFromPath(songData.get(position).getImgPath());
+//        holder.cover.setImageDrawable(img);;
+//        holder.cover.setImageResource(songData.get(position).getImgId());
+//        Toast.makeText(holder.cover.getContext(), songData.get(position).getImgPath(), Toast.LENGTH_LONG).show();
         holder.like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,7 +88,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return songData.length;
+        return songData.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -83,5 +107,14 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
             this.name = (TextView) itemView.findViewById(R.id.artistNameSong);
             this.layout = (ConstraintLayout) itemView.findViewById(R.id.songLayout);
         }
+    }
+
+    private byte[] getAlbumArt(String uri) {
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        retriever.setDataSource(uri);
+
+        byte[] art = retriever.getEmbeddedPicture();
+        retriever.release();
+        return art;
     }
 }
