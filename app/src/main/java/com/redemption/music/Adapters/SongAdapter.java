@@ -1,10 +1,6 @@
 package com.redemption.music.Adapters;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.media.MediaMetadataRetriever;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,10 +39,10 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final SongData newSongData = songData.get(position);
-        holder.title.setText(songData.get(position).getTitle());
-        holder.name.setText(songData.get(position).getName());
-        if (songData.get(position).getPath() != null) {
-            byte[] image = getAlbumArt(songData.get(position).getPath());
+        holder.title.setText(newSongData.getTitle());
+        holder.name.setText(newSongData.getPath());
+        if (newSongData.getPath() != null) {
+            byte[] image = getAlbumArt(newSongData.getPath());
             if (image != null) {
                 Glide.with(holder.cover.getContext()).asBitmap()
                         .load(image)
@@ -61,10 +57,6 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
                     .load(R.drawable.playlist)
                     .into(holder.cover);
         }
-//        Drawable img = Drawable.createFromPath(songData.get(position).getImgPath());
-//        holder.cover.setImageDrawable(img);;
-//        holder.cover.setImageResource(songData.get(position).getImgId());
-//        Toast.makeText(holder.cover.getContext(), songData.get(position).getImgPath(), Toast.LENGTH_LONG).show();
         holder.like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

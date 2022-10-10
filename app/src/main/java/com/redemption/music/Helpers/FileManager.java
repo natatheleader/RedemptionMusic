@@ -22,14 +22,14 @@ public class FileManager {
 
     @SuppressLint("Range")
     public List<SongData> getTracks(){
-        ArrayList<SongData> allTracks = new ArrayList<SongData>();
+        ArrayList<SongData> allTracks = new ArrayList<>();
         Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         String[] projection = {
                 MediaStore.Audio.Media.ALBUM,
                 MediaStore.Audio.Media.TITLE,
                 MediaStore.Audio.Media.DURATION,
                 MediaStore.Audio.Media.DATA,
-                MediaStore.Audio.Media.ARTIST
+                MediaStore.Audio.Media.ARTIST,
         };
 
         Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null);
@@ -47,23 +47,7 @@ public class FileManager {
                 allTracks.add(songData);
             }
             cursor.close();
-//            if (cursor.moveToFirst()) {
-//                do {
-//                    String name;
-//                    name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME));
-//                    String artist;
-//                    artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
-//                    int x = cursor.getColumnIndex(android.provider.MediaStore.Audio.Albums.ALBUM_ART);
-//                    String thisArt = cursor.getString(x);
-//                    String img;
-//                    img = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM_ART));
-////                    img = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
-//
-//                    allTracks.add(new SongData(name, artist, thisArt));
-//
-//                } while (cursor.moveToNext());
-//            }
-//            cursor.close();
+
         }
 
         return allTracks;

@@ -4,7 +4,7 @@ public class SongData {
 
     private String title, name, path;
 
-    public SongData(String title, String name, String Path) {
+    public SongData(String title, String name, String path) {
         this.title = title;
         this.name = name;
         this.path = path;
