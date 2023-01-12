@@ -1,23 +1,27 @@
 package com.redemption.music.Models;
 
 public class AlbumData {
-    private String name;
-    private int imgId;
 
-    public AlbumData(String name, int imgId) {
+    private String name, path;
+
+    public AlbumData(String name, String path) {
         this.name = name;
-        this.imgId = imgId;
+        this.path = path;
     }
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
-    public int getImgId() {
-        return imgId;
+
+    public String getPath() {
+        return path;
     }
-    public void setImgId(int imgId) {
-        this.imgId = imgId;
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }

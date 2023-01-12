@@ -1,5 +1,6 @@
 package com.redemption.music.Adapters;
 
+import android.media.MediaMetadataRetriever;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,16 +11,19 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.redemption.music.Models.ArtistData;
 import com.redemption.music.Models.PlaylistData;
 import com.redemption.music.R;
 
+import java.util.ArrayList;
+
 public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ViewHolder> {
 
-    private ArtistData[] artistData;
+    private ArrayList<ArtistData> artistData;
 
     // RecyclerView recyclerView;
-    public ArtistAdapter(ArtistData[] artistData) {
+    public ArtistAdapter(ArrayList<ArtistData> artistData) {
         this.artistData = artistData;
     }
 
@@ -35,9 +39,25 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final ArtistData newArtistData = artistData[position];
-        holder.name.setText(artistData[position].getName());
-        holder.cover.setImageResource(artistData[position].getImgId());
+        final ArtistData newArtistData = artistData.get(position);
+        holder.name.setText(artistData.get(position).getName());
+        if (newArtistData.getPath() != null) {
+            byte[] image = getAlbumArt(newArtistData.getPath());
+            if (image != null) {
+                Glide.with(holder.cover.getContext()).asBitmap()
+                        .load(image)
+                        .into(holder.cover);
+            } else {
+                Glide.with(holder.cover.getContext())
+                        .load(R.drawable.playlist)
+                        .into(holder.cover);
+            }
+        } else  {
+            Glide.with(holder.cover.getContext())
+                    .load(R.drawable.playlist)
+                    .into(holder.cover);
+        }
+//        holder.cover.setImageResource(artistData.get(position).getImgId());
         holder.play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -54,7 +74,7 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ViewHolder
 
     @Override
     public int getItemCount() {
-        return artistData.length;
+        return artistData.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -69,5 +89,14 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ViewHolder
             this.play = (ImageView) itemView.findViewById(R.id.artistPlay);
             this.name = (TextView) itemView.findViewById(R.id.artistName);
         }
+    }
+
+    private byte[] getAlbumArt(String uri) {
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        retriever.setDataSource(uri);
+
+        byte[] art = retriever.getEmbeddedPicture();
+        retriever.release();
+        return art;
     }
 }

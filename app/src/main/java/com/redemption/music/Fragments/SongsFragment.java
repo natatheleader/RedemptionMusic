@@ -44,7 +44,7 @@ public class SongsFragment extends Fragment {
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         } else {
-//            add some layout that sayes no music here
+//            add some layout that say's no music here
         }
 
         return view;

@@ -2,24 +2,25 @@ package com.redemption.music.Models;
 
 public class GenresData {
 
-    private String name;
-    private int imgId;
+    private String name, path;
 
-    public GenresData (String name, int imgId) {
+    public GenresData (String name, String path) {
         this.name = name;
-        this.imgId = imgId;
+        this.path = path;
     }
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
-    public int getImgId() {
-        return imgId;
-    }
-    public void setImgId(int imgId) {
-        this.imgId = imgId;
+
+    public String getPath() { return path; }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 
 }
