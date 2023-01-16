@@ -1,5 +1,6 @@
 package com.redemption.music.Adapters;
 
+import android.content.Intent;
 import android.media.MediaMetadataRetriever;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.redemption.music.Models.SongData;
+import com.redemption.music.PlayerActivity;
 import com.redemption.music.R;
 
 import java.util.ArrayList;
@@ -40,7 +42,8 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final SongData newSongData = songData.get(position);
         holder.title.setText(newSongData.getTitle());
-        holder.name.setText(newSongData.getPath());
+        holder.name.setText(newSongData.getName());
+
         if (newSongData.getPath() != null) {
             byte[] image = getAlbumArt(newSongData.getPath());
             if (image != null) {
@@ -57,6 +60,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
                     .load(R.drawable.playlist)
                     .into(holder.cover);
         }
+
         holder.like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,16 +68,21 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
                 Toast.makeText(view.getContext(),"like item: " + newSongData.getTitle(), Toast.LENGTH_LONG).show();
             }
         });
+
         holder.menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(view.getContext(),"menu item: " + newSongData.getTitle(), Toast.LENGTH_LONG).show();
             }
         });
+
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(),"layout item: " + newSongData.getTitle(), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(view.getContext(), PlayerActivity.class);
+                intent.putExtra("name", newSongData.getTitle());
+                view.getContext().startActivity(intent);
+//                Toast.makeText(view.getContext(),"layout item: " + newSongData.getTitle(), Toast.LENGTH_LONG).show();
             }
         });
     }
