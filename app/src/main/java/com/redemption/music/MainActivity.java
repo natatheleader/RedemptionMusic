@@ -10,9 +10,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,6 +27,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.redemption.music.Adapters.TabAdapter;
 import com.redemption.music.Models.SongData;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     public TabLayout tabLayout;
     public ViewPager viewPager;
 
-    public SongData songData;
+    static ArrayList<SongData> songData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +100,8 @@ public class MainActivity extends AppCompatActivity {
             if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     == PackageManager.PERMISSION_GRANTED) {
                 Log.v("PERMINIT","Permission is granted");
+                songData = getAllSong(getApplicationContext());
+
             } else {
 
                 Log.v("PERMINIT","Permission is revoked");
@@ -103,7 +110,36 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             Log.v("PERMINIT","Permission is granted");
+            songData = getAllSong(getApplicationContext());
         }
+    }
+
+    public static ArrayList<SongData> getAllSong(Context context) {
+        ArrayList<SongData> tempSong = new ArrayList<>();
+        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        String[] projection = {
+                MediaStore.Audio.Media.ALBUM,
+                MediaStore.Audio.Media.TITLE,
+                MediaStore.Audio.Media.DURATION,
+                MediaStore.Audio.Media.DATA,
+                MediaStore.Audio.Media.ARTIST,
+
+        };
+        Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null);
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                String album = cursor.getString(0);
+                String title = cursor.getString(1);
+                String duration = cursor.getString(2);
+                String path = cursor.getString(3);
+                String artist = cursor.getString(4);
+
+                SongData song = new SongData(title, path, artist, album, duration);
+                tempSong.add(song);
+            }
+            cursor.close();
+        }
+        return tempSong;
     }
 
     // override the onOptionsItemSelected()

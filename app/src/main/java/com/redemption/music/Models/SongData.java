@@ -2,12 +2,14 @@ package com.redemption.music.Models;
 
 public class SongData {
 
-    private String title, name, path;
+    private String title, path, artist, album, duration;
 
-    public SongData(String title, String name, String path) {
+    public SongData(String title, String path, String artist, String album, String duration) {
         this.title = title;
-        this.name = name;
         this.path = path;
+        this.artist = artist;
+        this.album = album;
+        this.duration = duration;
     }
 
     public String getTitle() {
@@ -18,19 +20,35 @@ public class SongData {
         this.title = title;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getPath() {
         return path;
     }
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public String getArtist() {
+        return artist;
+    }
+
+    public void setArtist(String artist) {
+        this.artist = artist;
+    }
+
+    public String getAlbum() {
+        return album;
+    }
+
+    public void setAlbum(String album) {
+        this.album = album;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
     }
 }
