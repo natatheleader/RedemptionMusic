@@ -1,5 +1,7 @@
 package com.redemption.music.Fragments;
 
+import static com.redemption.music.MainActivity.songData;
+
 import android.os.Build;
 import android.os.Bundle;
 
@@ -22,28 +24,31 @@ import java.util.ArrayList;
 
 public class SongsFragment extends Fragment {
 
-    View view;
+    RecyclerView recyclerView;
+    SongAdapter songAdapter;
+//    View view;
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_songs, container, false);
+        View view = inflater.inflate(R.layout.fragment_songs, container, false);
 
         //Get tracks using FileManager
-        FileManager fileManager = new FileManager(getContext());
+//        FileManager fileManager = new FileManager(getContext());
         // data to populate the RecyclerView with
-        ArrayList<SongData> tracks = (ArrayList<SongData>) fileManager.getTracks();
+//        ArrayList<SongData> tracks = (ArrayList<SongData>) fileManager.getTracks();
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.songRecycler);
+        recyclerView = (RecyclerView) view.findViewById(R.id.songRecycler);
         recyclerView.setHasFixedSize(true);
 
-        if (!(tracks.size() < 1)) {
-            SongAdapter adapter = new SongAdapter(tracks);
-            recyclerView.setAdapter(adapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        if (!(songData.size() < 1)) {
+            songAdapter = new SongAdapter(getContext(), songData);
+            recyclerView.setAdapter(songAdapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         } else {
+            Toast.makeText(getContext(), "no song", Toast.LENGTH_SHORT).show();
 //            add some layout that say's no music here
         }
 

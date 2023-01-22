@@ -1,5 +1,7 @@
 package com.redemption.music.Adapters;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.media.MediaMetadataRetriever;
 import android.view.LayoutInflater;
@@ -20,43 +22,35 @@ import com.redemption.music.R;
 
 import java.util.ArrayList;
 
-public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
+public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> {
 
     private ArrayList<SongData> songData;
+    private Context mContext;
 
-    public SongAdapter(ArrayList<SongData> songData) {
+    public SongAdapter(Context mContext, ArrayList<SongData> songData) {
+        this.mContext = mContext;
         this.songData = songData;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View listItem= layoutInflater.inflate(R.layout.song_item, parent, false);
-        SongAdapter.ViewHolder viewHolder = new SongAdapter.ViewHolder(listItem);
-
-        return viewHolder;
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(mContext).inflate(R.layout.song_item, parent, false);
+        return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final SongData newSongData = songData.get(position);
-        holder.title.setText(newSongData.getTitle());
-        holder.name.setText(newSongData.getName());
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        holder.title.setText(songData.get(position).getTitle());
+        holder.name.setText(songData.get(position).getArtist());
 
-        if (newSongData.getPath() != null) {
-            byte[] image = getAlbumArt(newSongData.getPath());
-            if (image != null) {
-                Glide.with(holder.cover.getContext()).asBitmap()
-                        .load(image)
-                        .into(holder.cover);
-            } else {
-                Glide.with(holder.cover.getContext())
-                        .load(R.drawable.playlist)
-                        .into(holder.cover);
-            }
-        } else  {
-            Glide.with(holder.cover.getContext())
+        byte[] image = getAlbumArt(songData.get(position).getPath());
+        if (image != null) {
+            Glide.with(mContext).asBitmap()
+                    .load(image)
+                    .into(holder.cover);
+        } else {
+            Glide.with(mContext)
                     .load(R.drawable.playlist)
                     .into(holder.cover);
         }
@@ -65,14 +59,14 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
 //                holder.like.setColorFilter(ActivityCompat.getColor(view.getContext(), R.color.maximum_yellow_red));
-                Toast.makeText(view.getContext(),"like item: " + newSongData.getTitle(), Toast.LENGTH_LONG).show();
+                Toast.makeText(view.getContext(),"like item: " + songData.get(position).getTitle(), Toast.LENGTH_LONG).show();
             }
         });
 
         holder.menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(),"menu item: " + newSongData.getTitle(), Toast.LENGTH_LONG).show();
+                Toast.makeText(view.getContext(),"menu item: " + songData.get(position).getTitle(), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -80,7 +74,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), PlayerActivity.class);
-                intent.putExtra("name", newSongData.getTitle());
+                intent.putExtra("name", songData.get(position).getTitle());
                 view.getContext().startActivity(intent);
 //                Toast.makeText(view.getContext(),"layout item: " + newSongData.getTitle(), Toast.LENGTH_LONG).show();
             }
@@ -92,13 +86,13 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         return songData.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView cover, like, menu;
         public TextView title, name;
         public ConstraintLayout layout;
 
-        public ViewHolder(@NonNull View itemView) {
+        public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             this.cover = (ImageView) itemView.findViewById(R.id.songImage);

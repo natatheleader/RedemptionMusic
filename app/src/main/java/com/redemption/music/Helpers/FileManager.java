@@ -44,9 +44,7 @@ public class FileManager {
                 String path = cursor.getString(3);
                 String artist = cursor.getString(4);
 
-                SongData songData = new SongData(title, artist, path);
-
-                Log.e("path : " + path, "album : " + album);
+                SongData songData = new SongData(title, path, artist, album, duration);
                 allTracks.add(songData);
             }
             cursor.close();
