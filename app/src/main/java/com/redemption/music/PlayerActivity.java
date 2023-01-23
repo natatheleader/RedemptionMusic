@@ -34,7 +34,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class PlayerActivity extends AppCompatActivity implements MediaPlayer.OnCompletionListener {
 
     TextView song_name, artist_name, duration_played, duration_total;
-    ImageView top_album_art, add_to_playlist, menu, bg, fev, prev, next, shuffle;
+    ImageView top_album_art, add_to_playlist, menu, bg, repeat, prev, next, shuffle;
     CircleImageView center;
     SeekBar seek;
     FloatingActionButton play;
@@ -122,7 +122,8 @@ public class PlayerActivity extends AppCompatActivity implements MediaPlayer.OnC
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.stop();
             mediaPlayer.release();
-            position = ((position + 1) % listOfSongs.size());
+            position = ((position + 1) > listOfSongs.size() ? (1) : (position + 1));
+//            position = ((position + 1) % listOfSongs.size());
             uri = Uri.parse(listOfSongs.get(position).getPath());
             mediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
             metaData(uri);
@@ -146,7 +147,8 @@ public class PlayerActivity extends AppCompatActivity implements MediaPlayer.OnC
         } else {
             mediaPlayer.stop();
             mediaPlayer.release();
-            position = ((position + 1) % listOfSongs.size());
+            position = ((position + 1) > listOfSongs.size() ? (1) : (position + 1));
+//            position = ((position + 1) % listOfSongs.size());
             uri = Uri.parse(listOfSongs.get(position).getPath());
             mediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
             metaData(uri);
@@ -334,7 +336,7 @@ public class PlayerActivity extends AppCompatActivity implements MediaPlayer.OnC
         menu = findViewById(R.id.player_menu);
         bg = findViewById(R.id.player_bg);
         center = findViewById(R.id.player_album_art_center);
-        fev = findViewById(R.id.player_fev);
+        repeat = findViewById(R.id.player_repeat);
         prev = findViewById(R.id.player_prev);
         next = findViewById(R.id.player_next);
         shuffle = findViewById(R.id.player_shuffle);
@@ -352,24 +354,26 @@ public class PlayerActivity extends AppCompatActivity implements MediaPlayer.OnC
 
         Bitmap bitmap = null;
         if (art != null) {
-            Glide.with(this)
-                    .asBitmap()
-                    .load(art)
-                    .into(top_album_art);
+//            Glide.with(this)
+//                    .asBitmap()
+//                    .load(art)
+//                    .into(top_album_art);
 
-            Glide.with(this)
-                    .asBitmap()
-                    .load(art)
-                    .into(bg);
+            ImageAnimation(getApplicationContext(), bg, art);
+            ImageAnimation(getApplicationContext(), top_album_art, art);
+            ImageAnimation(getApplicationContext(), center, art);
 
-            Glide.with(this)
-                    .asBitmap()
-                    .load(art)
-                    .into(center);
+//            Glide.with(this)
+//                    .asBitmap()
+//                    .load(art)
+//                    .into(bg);
+
+//            Glide.with(this)
+//                    .asBitmap()
+//                    .load(art)
+//                    .into(center);
 
             bitmap = BitmapFactory.decodeByteArray(art, 0, art.length);
-
-//            ImageAnimation(this, bg, bitmap);
 
             Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
                 @Override
@@ -400,7 +404,7 @@ public class PlayerActivity extends AppCompatActivity implements MediaPlayer.OnC
         }
     }
 
-    public void ImageAnimation(Context context, ImageView imageView, Bitmap bitmap) {
+    public void ImageAnimation(Context context, ImageView imageView, byte[] bitmap) {
         Animation animOut = AnimationUtils.loadAnimation(context, android.R.anim.fade_out);
         Animation animIn = AnimationUtils.loadAnimation(context, android.R.anim.fade_in);
         animOut.setAnimationListener(new Animation.AnimationListener() {
@@ -412,6 +416,7 @@ public class PlayerActivity extends AppCompatActivity implements MediaPlayer.OnC
             @Override
             public void onAnimationEnd(Animation animation) {
                 Glide.with(context)
+                        .asBitmap()
                         .load(bitmap)
                         .into(imageView);
                 animIn.setAnimationListener(new Animation.AnimationListener() {
@@ -444,10 +449,10 @@ public class PlayerActivity extends AppCompatActivity implements MediaPlayer.OnC
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
         nextBtnClicked();
-        if (mediaPlayer != null) {
-            mediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
-            mediaPlayer.start();
-            mediaPlayer.setOnCompletionListener(this);
-        }
+//        if (mediaPlayer != null) {
+//            mediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
+//            mediaPlayer.start();
+//            mediaPlayer.setOnCompletionListener(this);
+//        }
     }
 }

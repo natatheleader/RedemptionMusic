@@ -106,7 +106,7 @@
 
     <ImageView
         android:id="@+id/player_bg"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_launcher_background"
@@ -191,7 +191,7 @@
             app:srcCompat="@drawable/play" />
 
         <ImageView
-            android:id="@+id/player_fev"
+            android:id="@+id/player_repeat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
@@ -200,7 +200,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/player_play"
-            app:srcCompat="@drawable/like" />
+            app:srcCompat="@drawable/repeat"
+            app:tint="@color/purple_navy" />
 
         <ImageView
             android:id="@+id/player_prev"
@@ -210,9 +211,10 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/player_fev"
+            app:layout_constraintStart_toEndOf="@+id/player_repeat"
             app:layout_constraintTop_toBottomOf="@+id/player_play"
-            app:srcCompat="@android:drawable/ic_media_previous" />
+            app:srcCompat="@drawable/previous"
+            app:tint="@color/purple_navy" />
 
         <ImageView
             android:id="@+id/player_next"
@@ -224,7 +226,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/player_shuffle"
             app:layout_constraintTop_toBottomOf="@+id/player_play"
-            app:srcCompat="@android:drawable/ic_media_next" />
+            app:srcCompat="@drawable/next"
+            app:tint="@color/purple_navy" />
 
         <ImageView
             android:id="@+id/player_shuffle"
@@ -236,7 +239,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/player_play"
-            app:srcCompat="@drawable/shuffle" />
+            app:srcCompat="@drawable/shuffle"
+            app:tint="@color/purple_navy" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
