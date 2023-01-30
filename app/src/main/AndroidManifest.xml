@@ -12,6 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Music">
         <activity
+            android:name=".AlbumDetailActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".PlayerActivity"
             android:exported="false" />
         <activity

@@ -1,6 +1,7 @@
 package com.redemption.music.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.MediaMetadataRetriever;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.redemption.music.AlbumDetailActivity;
 import com.redemption.music.Models.AlbumData;
 import com.redemption.music.Models.ArtistData;
 import com.redemption.music.R;
@@ -40,18 +42,12 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.name.setText(albumData.get(holder.getAdapterPosition()).getName());
-        if (albumData.get(holder.getAdapterPosition()).getPath() != null) {
-            byte[] image = getAlbumArt(albumData.get(holder.getAdapterPosition()).getPath());
-            if (image != null) {
-                Glide.with(holder.cover.getContext()).asBitmap()
-                        .load(image)
-                        .into(holder.cover);
-            } else {
-                Glide.with(holder.cover.getContext())
-                        .load(R.drawable.playlist)
-                        .into(holder.cover);
-            }
-        } else  {
+        byte[] image = getAlbumArt(albumData.get(holder.getAdapterPosition()).getPath());
+        if (image != null) {
+            Glide.with(holder.cover.getContext()).asBitmap()
+                    .load(image)
+                    .into(holder.cover);
+        } else {
             Glide.with(holder.cover.getContext())
                     .load(R.drawable.playlist)
                     .into(holder.cover);
@@ -63,10 +59,12 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.MyViewHolder
                 Toast.makeText(view.getContext(),"play item: " + albumData.get(holder.getAdapterPosition()).getName(), Toast.LENGTH_LONG).show();
             }
         });
-        holder.cover.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(),"image item: " + albumData.get(holder.getAdapterPosition()).getName(), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(mContext, AlbumDetailActivity.class);
+                intent.putExtra("albumName", albumData.get(holder.getAdapterPosition()).getName());
+                mContext.startActivity(intent);
             }
         });
     }
