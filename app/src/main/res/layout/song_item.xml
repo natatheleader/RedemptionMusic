@@ -28,6 +28,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/songImage"
         app:layout_constraintEnd_toStartOf="@+id/songLike"
         app:layout_constraintStart_toEndOf="@+id/songImage"

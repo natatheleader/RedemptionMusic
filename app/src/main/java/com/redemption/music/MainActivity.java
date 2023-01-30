@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     public ViewPager viewPager;
 
     public static ArrayList<SongData> songData;
+    static Boolean shuffleBoolean = false, repeatBoolean = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,5 +1,7 @@
 package com.redemption.music;
 
+import static com.redemption.music.MainActivity.repeatBoolean;
+import static com.redemption.music.MainActivity.shuffleBoolean;
 import static com.redemption.music.MainActivity.songData;
 
 import androidx.annotation.NonNull;
@@ -28,6 +30,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.redemption.music.Models.SongData;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -92,6 +95,44 @@ public class PlayerActivity extends AppCompatActivity implements MediaPlayer.OnC
                 handler.postDelayed(this, 1000);
             }
         });
+
+        shuffle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (shuffleBoolean) {
+                    shuffleBoolean = false;
+                    shuffle.setColorFilter(getApplicationContext().getResources().getColor(R.color.cadet_blue));
+                } else {
+                    shuffleBoolean = true;
+                    shuffle.setColorFilter(getApplicationContext().getResources().getColor(R.color.purple_navy));
+                }
+            }
+        });
+
+        repeat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (repeatBoolean) {
+                    repeatBoolean = false;
+                    repeat.setColorFilter(getApplicationContext().getResources().getColor(R.color.cadet_blue));
+                } else {
+                    repeatBoolean = true;
+                    repeat.setColorFilter(getApplicationContext().getResources().getColor(R.color.purple_navy));
+                }
+            }
+        });
+
+        if (repeatBoolean) {
+            repeat.setColorFilter(getApplicationContext().getResources().getColor(R.color.purple_navy));
+        } else {
+            repeat.setColorFilter(getApplicationContext().getResources().getColor(R.color.cadet_blue));
+        }
+
+        if (shuffleBoolean) {
+            shuffle.setColorFilter(getApplicationContext().getResources().getColor(R.color.purple_navy));
+        } else {
+            shuffle.setColorFilter(getApplicationContext().getResources().getColor(R.color.cadet_blue));
+        }
     }
 
     @Override
@@ -122,7 +163,13 @@ public class PlayerActivity extends AppCompatActivity implements MediaPlayer.OnC
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.stop();
             mediaPlayer.release();
-            position = ((position + 1) > listOfSongs.size() ? (1) : (position + 1));
+            if (shuffleBoolean && !repeatBoolean) {
+                position = getRandom(listOfSongs.size() - 1);
+            } else if (!shuffleBoolean && !repeatBoolean) {
+                position = ((position + 1) > listOfSongs.size() ? (1) : (position + 1));
+            } else {
+                position = position;
+            }
 //            position = ((position + 1) % listOfSongs.size());
             uri = Uri.parse(listOfSongs.get(position).getPath());
             mediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
@@ -147,7 +194,13 @@ public class PlayerActivity extends AppCompatActivity implements MediaPlayer.OnC
         } else {
             mediaPlayer.stop();
             mediaPlayer.release();
-            position = ((position + 1) > listOfSongs.size() ? (1) : (position + 1));
+            if (shuffleBoolean && !repeatBoolean) {
+                position = getRandom(listOfSongs.size() - 1);
+            } else if (!shuffleBoolean && !repeatBoolean) {
+                position = ((position + 1) > listOfSongs.size() ? (1) : (position + 1));
+            } else {
+                position = position;
+            }
 //            position = ((position + 1) % listOfSongs.size());
             uri = Uri.parse(listOfSongs.get(position).getPath());
             mediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
@@ -172,6 +225,11 @@ public class PlayerActivity extends AppCompatActivity implements MediaPlayer.OnC
         }
     }
 
+    private int getRandom(int i) {
+        Random random = new Random();
+        return random.nextInt(i + 1);
+    }
+
     private void previousThreadBtn() {
         prevThread = new Thread() {
             @Override
@@ -192,7 +250,13 @@ public class PlayerActivity extends AppCompatActivity implements MediaPlayer.OnC
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.stop();
             mediaPlayer.release();
-            position = ((position - 1) < 0 ? (listOfSongs.size() - 1) : (position - 1));
+            if (shuffleBoolean && !repeatBoolean) {
+                position = getRandom(listOfSongs.size() - 1);
+            } else if (!shuffleBoolean && !repeatBoolean) {
+                position = ((position - 1) < 0 ? (listOfSongs.size() - 1) : (position - 1));
+            } else {
+                position = position;
+            }
             uri = Uri.parse(listOfSongs.get(position).getPath());
             mediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
             metaData(uri);
@@ -216,7 +280,13 @@ public class PlayerActivity extends AppCompatActivity implements MediaPlayer.OnC
         } else {
             mediaPlayer.stop();
             mediaPlayer.release();
-            position = ((position - 1) < 0 ? (listOfSongs.size() - 1) : (position - 1));
+            if (shuffleBoolean && !repeatBoolean) {
+                position = getRandom(listOfSongs.size() - 1);
+            } else if (!shuffleBoolean && !repeatBoolean) {
+                position = ((position - 1) < 0 ? (listOfSongs.size() - 1) : (position - 1));
+            } else {
+                position = position;
+            }
             uri = Uri.parse(listOfSongs.get(position).getPath());
             mediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
             metaData(uri);

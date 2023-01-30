@@ -28,12 +28,14 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/player_album_art_thumb"
+            app:layout_constraintEnd_toStartOf="@+id/constraintLayout4"
             app:layout_constraintStart_toEndOf="@+id/player_album_art_thumb"
             app:layout_constraintTop_toTopOf="@+id/player_album_art_thumb">
 
@@ -66,6 +68,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -184,6 +187,8 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="32dp"
+            android:backgroundTint="@color/cadet_blue"
+            android:foregroundTint="@color/purple_navy"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -195,52 +200,48 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="32dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/player_play"
             app:srcCompat="@drawable/repeat"
-            app:tint="@color/purple_navy" />
+            app:tint="@color/cadet_blue" />
 
         <ImageView
             android:id="@+id/player_prev"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="32dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/player_repeat"
             app:layout_constraintTop_toBottomOf="@+id/player_play"
             app:srcCompat="@drawable/previous"
-            app:tint="@color/purple_navy" />
+            app:tint="@color/cadet_blue" />
 
         <ImageView
             android:id="@+id/player_next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:layout_marginEnd="40dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="32dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/player_shuffle"
             app:layout_constraintTop_toBottomOf="@+id/player_play"
             app:srcCompat="@drawable/next"
-            app:tint="@color/purple_navy" />
+            app:tint="@color/cadet_blue" />
 
         <ImageView
             android:id="@+id/player_shuffle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:layout_marginEnd="40dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="32dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/player_play"
             app:srcCompat="@drawable/shuffle"
-            app:tint="@color/purple_navy" />
+            app:tint="@color/cadet_blue" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
