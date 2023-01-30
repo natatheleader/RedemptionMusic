@@ -33,6 +33,7 @@ public class FileManager {
                 MediaStore.Audio.Media.DURATION,
                 MediaStore.Audio.Media.DATA,
                 MediaStore.Audio.Media.ARTIST,
+                MediaStore.Audio.Media._ID
         };
 
         Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null);
@@ -43,8 +44,9 @@ public class FileManager {
                 String duration = cursor.getString(2);
                 String path = cursor.getString(3);
                 String artist = cursor.getString(4);
+                String id = cursor.getString(5);
 
-                SongData songData = new SongData(title, path, artist, album, duration);
+                SongData songData = new SongData(id, title, path, artist, album, duration);
                 allTracks.add(songData);
             }
             cursor.close();

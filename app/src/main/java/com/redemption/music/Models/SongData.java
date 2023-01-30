@@ -2,15 +2,20 @@ package com.redemption.music.Models;
 
 public class SongData {
 
-    private String title, path, artist, album, duration;
+    private String id, title, path, artist, album, duration;
 
-    public SongData(String title, String path, String artist, String album, String duration) {
+    public SongData(String id, String title, String path, String artist, String album, String duration) {
+        this.id = id;
         this.title = title;
         this.path = path;
         this.artist = artist;
         this.album = album;
         this.duration = duration;
     }
+
+    public String getId() { return id; }
+
+    public void setId(String id) { this.id = id; }
 
     public String getTitle() {
         return title;

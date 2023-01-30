@@ -1,13 +1,19 @@
 package com.redemption.music.Adapters;
 
 import android.annotation.SuppressLint;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaMetadataRetriever;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,10 +22,13 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.model.Model;
+import com.google.android.material.snackbar.Snackbar;
 import com.redemption.music.Models.SongData;
 import com.redemption.music.PlayerActivity;
 import com.redemption.music.R;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> {
@@ -41,10 +50,10 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.title.setText(songData.get(position).getTitle());
-        holder.name.setText(songData.get(position).getArtist());
+        holder.title.setText(songData.get(holder.getAdapterPosition()).getTitle());
+        holder.name.setText(songData.get(holder.getAdapterPosition()).getArtist());
 
-        byte[] image = getAlbumArt(songData.get(position).getPath());
+        byte[] image = getAlbumArt(songData.get(holder.getAdapterPosition()).getPath());
         if (image != null) {
             Glide.with(mContext).asBitmap()
                     .load(image)
@@ -59,14 +68,27 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
             @Override
             public void onClick(View view) {
 //                holder.like.setColorFilter(ActivityCompat.getColor(view.getContext(), R.color.maximum_yellow_red));
-                Toast.makeText(view.getContext(),"like item: " + songData.get(position).getTitle(), Toast.LENGTH_LONG).show();
+                Toast.makeText(view.getContext(),"like item: " + songData.get(holder.getAdapterPosition()).getTitle(), Toast.LENGTH_LONG).show();
             }
         });
 
         holder.menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(),"menu item: " + songData.get(position).getTitle(), Toast.LENGTH_LONG).show();
+                PopupMenu popupMenu = new PopupMenu(mContext, view);
+                popupMenu.getMenuInflater().inflate(R.menu.song_more_menu, popupMenu.getMenu());
+                popupMenu.show();
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        switch (menuItem.getItemId()) {
+                            case R.id.song_menu_delete:
+                                deleteFile(holder.getAdapterPosition(), view);
+                                break;
+                        }
+                        return true;
+                    }
+                });
             }
         });
 
@@ -74,10 +96,30 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, PlayerActivity.class);
-                intent.putExtra("position", position);
+                intent.putExtra("position", holder.getAdapterPosition());
                 mContext.startActivity(intent);
             }
         });
+    }
+
+    private void deleteFile(int position, View view) {
+        Uri contentUri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, Long.parseLong(songData.get(position).getId()));
+        File file = new File(songData.get(position).getPath());
+        boolean deleted = file.delete();
+        if (deleted) {
+            mContext.getContentResolver().delete(contentUri, null, null);
+            songData.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, songData.size());
+            Snackbar.make(view, "File deleted!", Snackbar.LENGTH_LONG)
+//                .setActionTextColor(mContext.getResources().getColor(R.color.azureish_white))
+                    .show();
+        } else {
+            Snackbar.make(view, "File can't be deleted!", Snackbar.LENGTH_LONG)
+//                .setActionTextColor(mContext.getResources().getColor(R.color.azureish_white))
+                    .show();
+        }
+
     }
 
     @Override
