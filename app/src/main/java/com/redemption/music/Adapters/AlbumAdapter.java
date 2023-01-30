@@ -1,5 +1,6 @@
 package com.redemption.music.Adapters;
 
+import android.content.Context;
 import android.media.MediaMetadataRetriever;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,31 +19,29 @@ import com.redemption.music.R;
 
 import java.util.ArrayList;
 
-public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> {
+public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.MyViewHolder> {
 
     private ArrayList<AlbumData> albumData;
+    private Context mContext;
 
     // RecyclerView recyclerView;
-    public AlbumAdapter(ArrayList<AlbumData> albumData) {
+    public AlbumAdapter(Context mContext, ArrayList<AlbumData> albumData) {
+        this.mContext = mContext;
         this.albumData = albumData;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View listItem= layoutInflater.inflate(R.layout.album_item, parent, false);
-        ViewHolder viewHolder = new ViewHolder(listItem);
-
-        return viewHolder;
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view= LayoutInflater.from(mContext).inflate(R.layout.album_item, parent, false);
+        return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final AlbumData newAlbumData = albumData.get(position);
-        holder.name.setText(albumData.get(position).getName());
-        if (newAlbumData.getPath() != null) {
-            byte[] image = getAlbumArt(newAlbumData.getPath());
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        holder.name.setText(albumData.get(holder.getAdapterPosition()).getName());
+        if (albumData.get(holder.getAdapterPosition()).getPath() != null) {
+            byte[] image = getAlbumArt(albumData.get(holder.getAdapterPosition()).getPath());
             if (image != null) {
                 Glide.with(holder.cover.getContext()).asBitmap()
                         .load(image)
@@ -61,13 +60,13 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
         holder.play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(),"play item: " + newAlbumData.getName(), Toast.LENGTH_LONG).show();
+                Toast.makeText(view.getContext(),"play item: " + albumData.get(holder.getAdapterPosition()).getName(), Toast.LENGTH_LONG).show();
             }
         });
         holder.cover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(),"image item: " + newAlbumData.getName(), Toast.LENGTH_LONG).show();
+                Toast.makeText(view.getContext(),"image item: " + albumData.get(holder.getAdapterPosition()).getName(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -77,12 +76,12 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
         return albumData.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView cover, play;
         public TextView name;
 
-        public ViewHolder(@NonNull View itemView) {
+        public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             this.cover = (ImageView) itemView.findViewById(R.id.albumImage);
