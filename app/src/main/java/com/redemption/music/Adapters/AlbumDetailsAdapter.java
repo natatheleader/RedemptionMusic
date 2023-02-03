@@ -22,13 +22,13 @@ import com.redemption.music.R;
 
 import java.util.ArrayList;
 
-public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.MyViewHolder> {
+public class AlbumDetailsAdapter extends RecyclerView.Adapter<AlbumDetailsAdapter.MyViewHolder> {
 
     private ArrayList<SongData> albumData;
     private Context mContext;
 
     // RecyclerView recyclerView;
-    public AlbumAdapter(Context mContext, ArrayList<SongData> albumData) {
+    public AlbumDetailsAdapter(Context mContext, ArrayList<SongData> albumData) {
         this.mContext = mContext;
         this.albumData = albumData;
     }
@@ -36,13 +36,14 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.MyViewHolder
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(mContext).inflate(R.layout.album_item, parent, false);
+        View view= LayoutInflater.from(mContext).inflate(R.layout.album_detail_song_item, parent, false);
         return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.name.setText(albumData.get(holder.getAdapterPosition()).getAlbum());
+        holder.name.setText(albumData.get(holder.getAdapterPosition()).getTitle());
+        holder.artist.setText(albumData.get(holder.getAdapterPosition()).getArtist());
         byte[] image = getAlbumArt(albumData.get(holder.getAdapterPosition()).getPath());
         if (image != null) {
             Glide.with(holder.cover.getContext()).asBitmap()
@@ -54,18 +55,12 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.MyViewHolder
                     .into(holder.cover);
         }
 //        holder.cover.setImageResource(albumData.get(position).getImgId());
-        holder.play.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(view.getContext(),"play item: " + albumData.get(holder.getAdapterPosition()).getAlbum(), Toast.LENGTH_LONG).show();
-            }
-        });
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mContext, AlbumDetailActivity.class);
-                intent.putExtra("albumName", albumData.get(holder.getAdapterPosition()).getAlbum());
-                mContext.startActivity(intent);
+//                Intent intent = new Intent(mContext, AlbumDetailActivity.class);
+//                intent.putExtra("albumName", albumData.get(holder.getAdapterPosition()).getAlbum());
+//                mContext.startActivity(intent);
             }
         });
     }
@@ -77,15 +72,16 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.MyViewHolder
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public ImageView cover, play;
-        public TextView name;
+        public ImageView cover;
+        public TextView name, artist;
+
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            this.cover = (ImageView) itemView.findViewById(R.id.albumImage);
-            this.play = (ImageView) itemView.findViewById(R.id.albumPlay);
-            this.name = (TextView) itemView.findViewById(R.id.albumName);
+            this.cover = (ImageView) itemView.findViewById(R.id.albumDetailSongImage);
+            this.artist = (TextView) itemView.findViewById(R.id.albumDetailArtistNameSong);
+            this.name = (TextView) itemView.findViewById(R.id.albumDetailSongTitle);
         }
     }
 

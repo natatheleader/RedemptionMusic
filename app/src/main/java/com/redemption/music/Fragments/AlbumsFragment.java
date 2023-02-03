@@ -40,15 +40,15 @@ public class AlbumsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_albums, container, false);
 
         //Get tracks using FileManager
-        FileManager fileManager = new FileManager(getContext());
+//        FileManager fileManager = new FileManager(getContext());
         // data to populate the RecyclerView with
-        ArrayList<AlbumData> albums = (ArrayList<AlbumData>) fileManager.getAlbum();
+//        ArrayList<AlbumData> albums = (ArrayList<AlbumData>) fileManager.getAlbum();
 
         recyclerView = (RecyclerView) view.findViewById(R.id.albumRecycler);
         recyclerView.setHasFixedSize(true);
 
-        if (!(albums.size() < 1)) {
-            albumAdapter = new AlbumAdapter(getContext(), albums);
+        if (!(songData.size() < 1)) {
+            albumAdapter = new AlbumAdapter(getContext(), songData);
             recyclerView.setAdapter(albumAdapter);
             recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         } else {
