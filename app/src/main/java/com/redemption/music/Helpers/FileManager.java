@@ -1,5 +1,7 @@
 package com.redemption.music.Helpers;
 
+import static com.redemption.music.MainActivity.albumData;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
@@ -25,6 +27,7 @@ public class FileManager {
 
     @SuppressLint("Range")
     public List<SongData> getTracks(){
+        ArrayList<String> duplicate = new ArrayList<>();
         ArrayList<SongData> allTracks = new ArrayList<>();
         Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         String[] projection = {
@@ -48,6 +51,10 @@ public class FileManager {
 
                 SongData songData = new SongData(id, title, path, artist, album, duration);
                 allTracks.add(songData);
+                if (!duplicate.contains(album)) {
+                    albumData.add(songData);
+                    duplicate.add(album);
+                }
             }
             cursor.close();
 

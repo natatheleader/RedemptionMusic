@@ -28,6 +28,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
+import com.redemption.music.Adapters.SongAdapter;
 import com.redemption.music.Adapters.TabAdapter;
 import com.redemption.music.Fragments.AlbumsFragment;
 import com.redemption.music.Fragments.ArtistsFragment;
@@ -38,9 +39,10 @@ import com.redemption.music.Helpers.FileManager;
 import com.redemption.music.Models.SongData;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     public DrawerLayout drawerLayout;
     public ActionBarDrawerToggle actionBarDrawerToggle;
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     public ViewPager viewPager;
 
     public static ArrayList<SongData> songData;
+    public static ArrayList<SongData> albumData = new ArrayList<>();
     static Boolean shuffleBoolean = false, repeatBoolean = false;
 
     @Override
@@ -174,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
         menu.findItem(R.id.search).setOnActionExpandListener(onActionExpandListener);
         SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
         searchView.setQueryHint("Search ...");
+        searchView.setOnQueryTextListener(this);
         return true;
     }
 
@@ -210,5 +214,24 @@ public class MainActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return titles.get(position);
         }
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        String userInput = newText.toLowerCase();
+        ArrayList<SongData> mySearchedFiles = new ArrayList<>();
+        for (SongData song : songData) {
+            if (song.getTitle().toLowerCase().contains(userInput)) {
+                mySearchedFiles.add(song);
+            }
+
+        }
+        SongsFragment.class.
+        return false;
     }
 }

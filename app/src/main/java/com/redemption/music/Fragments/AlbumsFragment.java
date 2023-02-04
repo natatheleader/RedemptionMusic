@@ -1,5 +1,6 @@
 package com.redemption.music.Fragments;
 
+import static com.redemption.music.MainActivity.albumData;
 import static com.redemption.music.MainActivity.songData;
 
 import android.os.Build;
@@ -47,8 +48,8 @@ public class AlbumsFragment extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.albumRecycler);
         recyclerView.setHasFixedSize(true);
 
-        if (!(songData.size() < 1)) {
-            albumAdapter = new AlbumAdapter(getContext(), songData);
+        if (!(albumData.size() < 1)) {
+            albumAdapter = new AlbumAdapter(getContext(), albumData);
             recyclerView.setAdapter(albumAdapter);
             recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         } else {

@@ -18,13 +18,14 @@ import com.redemption.music.AlbumDetailActivity;
 import com.redemption.music.Models.AlbumData;
 import com.redemption.music.Models.ArtistData;
 import com.redemption.music.Models.SongData;
+import com.redemption.music.PlayerActivity;
 import com.redemption.music.R;
 
 import java.util.ArrayList;
 
 public class AlbumDetailsAdapter extends RecyclerView.Adapter<AlbumDetailsAdapter.MyViewHolder> {
 
-    private ArrayList<SongData> albumData;
+    public static ArrayList<SongData> albumData;
     private Context mContext;
 
     // RecyclerView recyclerView;
@@ -58,9 +59,10 @@ public class AlbumDetailsAdapter extends RecyclerView.Adapter<AlbumDetailsAdapte
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(mContext, AlbumDetailActivity.class);
-//                intent.putExtra("albumName", albumData.get(holder.getAdapterPosition()).getAlbum());
-//                mContext.startActivity(intent);
+                Intent intent = new Intent(mContext, PlayerActivity.class);
+                intent.putExtra("sender", "albumDetails");
+                intent.putExtra("position", holder.getAdapterPosition());
+                mContext.startActivity(intent);
             }
         });
     }

@@ -1,5 +1,6 @@
 package com.redemption.music;
 
+import static com.redemption.music.Adapters.AlbumDetailsAdapter.albumData;
 import static com.redemption.music.MainActivity.repeatBoolean;
 import static com.redemption.music.MainActivity.shuffleBoolean;
 import static com.redemption.music.MainActivity.songData;
@@ -376,7 +377,12 @@ public class PlayerActivity extends AppCompatActivity implements MediaPlayer.OnC
 
     private void getIntentMethod() {
         position = getIntent().getIntExtra("position", -1);
-        listOfSongs = songData;
+        String sender = getIntent().getStringExtra("sender");
+        if(sender != null && sender.equals("albumDetails")) {
+            listOfSongs = albumData;
+        } else {
+            listOfSongs = songData;
+        }
         if (listOfSongs != null) {
             play.setImageResource(R.drawable.pause);
             uri = Uri.parse(listOfSongs.get(position).getPath());

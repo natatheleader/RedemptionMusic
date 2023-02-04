@@ -153,4 +153,10 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
         retriever.release();
         return art;
     }
+
+    void updateList (ArrayList<SongData> songDataFiltered) {
+        songData = new ArrayList<>();
+        songData.addAll(songDataFiltered);
+        notifyDataSetChanged();
+    }
 }

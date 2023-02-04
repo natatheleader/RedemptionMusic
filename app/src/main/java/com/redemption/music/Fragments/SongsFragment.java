@@ -25,8 +25,12 @@ import java.util.ArrayList;
 public class SongsFragment extends Fragment {
 
     RecyclerView recyclerView;
-    SongAdapter songAdapter;
+    static SongAdapter songAdapter;
 //    View view;
+
+    public SongsFragment() {
+
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
