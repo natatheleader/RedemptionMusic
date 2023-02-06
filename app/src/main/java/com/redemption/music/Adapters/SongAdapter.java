@@ -33,12 +33,12 @@ import java.util.ArrayList;
 
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> {
 
-    private ArrayList<SongData> songData;
+    public static ArrayList<SongData> mSongData;
     private Context mContext;
 
-    public SongAdapter(Context mContext, ArrayList<SongData> songData) {
+    public SongAdapter(Context mContext, ArrayList<SongData> mSongData) {
         this.mContext = mContext;
-        this.songData = songData;
+        this.mSongData = mSongData;
     }
 
     @NonNull
@@ -50,10 +50,10 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.title.setText(songData.get(holder.getAdapterPosition()).getTitle());
-        holder.name.setText(songData.get(holder.getAdapterPosition()).getArtist());
+        holder.title.setText(mSongData.get(holder.getAdapterPosition()).getTitle());
+        holder.name.setText(mSongData.get(holder.getAdapterPosition()).getArtist());
 
-        byte[] image = getAlbumArt(songData.get(holder.getAdapterPosition()).getPath());
+        byte[] image = getAlbumArt(mSongData.get(holder.getAdapterPosition()).getPath());
         if (image != null) {
             Glide.with(mContext).asBitmap()
                     .load(image)
@@ -68,7 +68,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
             @Override
             public void onClick(View view) {
 //                holder.like.setColorFilter(ActivityCompat.getColor(view.getContext(), R.color.maximum_yellow_red));
-                Toast.makeText(view.getContext(),"like item: " + songData.get(holder.getAdapterPosition()).getTitle(), Toast.LENGTH_LONG).show();
+                Toast.makeText(view.getContext(),"like item: " + mSongData.get(holder.getAdapterPosition()).getTitle(), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -103,14 +103,14 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
     }
 
     private void deleteFile(int position, View view) {
-        Uri contentUri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, Long.parseLong(songData.get(position).getId()));
-        File file = new File(songData.get(position).getPath());
+        Uri contentUri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, Long.parseLong(mSongData.get(position).getId()));
+        File file = new File(mSongData.get(position).getPath());
         boolean deleted = file.delete();
         if (deleted) {
             mContext.getContentResolver().delete(contentUri, null, null);
-            songData.remove(position);
+            mSongData.remove(position);
             notifyItemRemoved(position);
-            notifyItemRangeChanged(position, songData.size());
+            notifyItemRangeChanged(position, mSongData.size());
             Snackbar.make(view, "File deleted!", Snackbar.LENGTH_LONG)
 //                .setActionTextColor(mContext.getResources().getColor(R.color.azureish_white))
                     .show();
@@ -124,7 +124,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
 
     @Override
     public int getItemCount() {
-        return songData.size();
+        return mSongData.size();
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -154,9 +154,9 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
         return art;
     }
 
-    void updateList (ArrayList<SongData> songDataFiltered) {
-        songData = new ArrayList<>();
-        songData.addAll(songDataFiltered);
+    public void updateList (ArrayList<SongData> songDataFiltered) {
+        mSongData = new ArrayList<>();
+        mSongData.addAll(songDataFiltered);
         notifyDataSetChanged();
     }
 }

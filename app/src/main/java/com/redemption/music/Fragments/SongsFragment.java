@@ -25,7 +25,7 @@ import java.util.ArrayList;
 public class SongsFragment extends Fragment {
 
     RecyclerView recyclerView;
-    static SongAdapter songAdapter;
+    public static SongAdapter songAdapter;
 //    View view;
 
     public SongsFragment() {

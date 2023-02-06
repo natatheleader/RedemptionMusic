@@ -231,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             }
 
         }
-        SongsFragment.class.
-        return false;
+    SongsFragment.songAdapter.updateList(mySearchedFiles);
+        return true;
     }
 }
