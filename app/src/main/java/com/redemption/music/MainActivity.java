@@ -15,6 +15,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -49,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     public TabLayout tabLayout;
     public ViewPager viewPager;
+
+    public static String MY_SORT_PREF = "SortOrder";
 
     public static ArrayList<SongData> songData;
     public static ArrayList<SongData> albumData = new ArrayList<>();
@@ -153,6 +156,26 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
+
+        SharedPreferences.Editor editor = getSharedPreferences(MY_SORT_PREF, MODE_PRIVATE).edit();
+        switch (item.getItemId()) {
+            case R.id.by_name:
+                editor.putString("sorting", "sortByName");
+                editor.apply();
+                this.recreate();
+                break;
+            case R.id.by_date:
+                editor.putString("sorting", "sortByDate");
+                editor.apply();
+                this.recreate();
+                break;
+            case R.id.by_size:
+                editor.putString("sorting", "sortBySize");
+                editor.apply();
+                this.recreate();
+                break;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 

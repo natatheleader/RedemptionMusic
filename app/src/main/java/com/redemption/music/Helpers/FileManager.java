@@ -1,9 +1,11 @@
 package com.redemption.music.Helpers;
 
+import static com.redemption.music.MainActivity.MY_SORT_PREF;
 import static com.redemption.music.MainActivity.albumData;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -27,9 +29,29 @@ public class FileManager {
 
     @SuppressLint("Range")
     public List<SongData> getTracks(){
+        SharedPreferences preferences = context.getSharedPreferences(MY_SORT_PREF, context.MODE_PRIVATE);
+        String sortOrder = preferences.getString("sorting", "sortByName");
+
         ArrayList<String> duplicate = new ArrayList<>();
+        albumData.clear();
         ArrayList<SongData> allTracks = new ArrayList<>();
+
+        String order = null;
+
         Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+
+        switch (sortOrder) {
+            case "sortByName" :
+                order = MediaStore.MediaColumns.DISPLAY_NAME + " ASC";
+                break;
+            case "sortByDate" :
+                order = MediaStore.MediaColumns.DATE_ADDED + " ASC";
+                break;
+            case "sortBySize" :
+                order = MediaStore.MediaColumns.SIZE + " DESC";
+                break;
+        }
+
         String[] projection = {
                 MediaStore.Audio.Media.ALBUM,
                 MediaStore.Audio.Media.TITLE,
@@ -39,7 +61,7 @@ public class FileManager {
                 MediaStore.Audio.Media._ID
         };
 
-        Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null);
+        Cursor cursor = context.getContentResolver().query(uri, projection, null, null, order);
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 String album = cursor.getString(0);
