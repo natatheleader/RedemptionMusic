@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:allowBackup="true"
@@ -33,6 +34,13 @@
         </activity>
 
         <service android:name="com.redemption.music.Helpers.MusicService" android:enabled="true" />
+        <receiver android:name="com.redemption.music.Helpers.NotificationReciever" android:enabled="true" android:exported="true">
+            <intent-filter>
+                <action android:name="actionPlay" />
+                <action android:name="actionNext" />
+                <action android:name="actionPrevious" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

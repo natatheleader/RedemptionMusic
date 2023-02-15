@@ -72,14 +72,10 @@ public class PlayerActivity extends AppCompatActivity implements ActionPlaying, 
     
     MusicService musicService;
 
-    MediaSessionCompat mediaSessionCompat;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
-
-        mediaSessionCompat = new MediaSessionCompat(getBaseContext(), "My Audio");
 
         initViews();
 
@@ -217,7 +213,7 @@ public class PlayerActivity extends AppCompatActivity implements ActionPlaying, 
                 }
             });
             musicService.OnCompleted();
-            showNotification(R.drawable.pause);
+            musicService.showNotification(R.drawable.pause);
             play.setImageResource(R.drawable.pause);
             musicService.start();
         } else {
@@ -249,7 +245,7 @@ public class PlayerActivity extends AppCompatActivity implements ActionPlaying, 
                 }
             });
             musicService.OnCompleted();
-            showNotification(R.drawable.pause);
+            musicService.showNotification(R.drawable.pause);
             play.setImageResource(R.drawable.pause);
             musicService.start();
         }
@@ -305,7 +301,7 @@ public class PlayerActivity extends AppCompatActivity implements ActionPlaying, 
                 }
             });
             musicService.OnCompleted();
-            showNotification(R.drawable.pause);
+            musicService.showNotification(R.drawable.pause);
             play.setImageResource(R.drawable.pause);
             musicService.start();
         } else {
@@ -336,7 +332,7 @@ public class PlayerActivity extends AppCompatActivity implements ActionPlaying, 
                 }
             });
             musicService.OnCompleted();
-            showNotification(R.drawable.pause);
+            musicService.showNotification(R.drawable.pause);
             play.setImageResource(R.drawable.pause);
             musicService.start();
         }
@@ -361,7 +357,7 @@ public class PlayerActivity extends AppCompatActivity implements ActionPlaying, 
     public void playBtnClicked() {
         if (musicService.isPlaying()) {
             play.setImageResource(R.drawable.play);
-            showNotification(R.drawable.play);
+            musicService.showNotification(R.drawable.play);
             musicService.pause();
             seek.setMax(musicService.getDuration() / 1000);
 
@@ -377,7 +373,7 @@ public class PlayerActivity extends AppCompatActivity implements ActionPlaying, 
             });
         } else {
             play.setImageResource(R.drawable.pause);
-            showNotification(R.drawable.pause);
+            musicService.showNotification(R.drawable.pause);
             musicService.start();
             seek.setMax(musicService.getDuration() / 1000);
 
@@ -420,7 +416,7 @@ public class PlayerActivity extends AppCompatActivity implements ActionPlaying, 
             play.setImageResource(R.drawable.pause);
             uri = Uri.parse(listOfSongs.get(position).getPath());
         }
-        showNotification(R.drawable.pause);
+
 
         Intent intent = new Intent(this, MusicService.class);
         intent.putExtra("servicePosition", position);
@@ -551,6 +547,7 @@ public class PlayerActivity extends AppCompatActivity implements ActionPlaying, 
     public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
         MusicService.MyBinder myBinder = (MusicService.MyBinder) iBinder;
         musicService = myBinder.getService();
+        musicService.setCallBack(this);
         Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show();
 
         seek.setMax(musicService.getDuration() / 1000);
@@ -561,90 +558,12 @@ public class PlayerActivity extends AppCompatActivity implements ActionPlaying, 
         artist_name.setText(listOfSongs.get(position).getArtist());
 
         musicService.OnCompleted();
+
+        musicService.showNotification(R.drawable.pause);
     }
 
     @Override
     public void onServiceDisconnected(ComponentName componentName) {
         musicService = null;
-    }
-
-    void showNotification(int playPauseBtn) {
-        Intent intent = new Intent(this, PlayerActivity.class);
-        PendingIntent contentIntent;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            contentIntent = PendingIntent.getActivity(this,
-                    0, intent.addFlags(
-                            Intent.FLAG_ACTIVITY_SINGLE_TOP),
-                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
-        }else {
-            contentIntent = PendingIntent.getActivity(this,
-                    0, intent.addFlags(
-                            Intent.FLAG_ACTIVITY_SINGLE_TOP),
-                    PendingIntent.FLAG_UPDATE_CURRENT);
-        }
-//        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, 0);
-
-        Intent prevIntent = new Intent(this, NotificationReciever.class).setAction(ACTION_PREVIOUS);
-        PendingIntent prevPending;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            prevPending = PendingIntent.getBroadcast(this,0, prevIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP),PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
-        }else {
-            prevPending = PendingIntent.getBroadcast(this,0, prevIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), PendingIntent.FLAG_UPDATE_CURRENT);
-        }
-//        PendingIntent prevPending = PendingIntent.getBroadcast(this, 0, prevIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        Intent pauseIntent = new Intent(this, NotificationReciever.class).setAction(ACTION_PLAY);
-        PendingIntent pausePending;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            pausePending = PendingIntent.getBroadcast(this,0, pauseIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP),PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
-        }else {
-            pausePending = PendingIntent.getBroadcast(this,0, pauseIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), PendingIntent.FLAG_UPDATE_CURRENT);
-        }
-//        PendingIntent pausePending = PendingIntent.getBroadcast(this, 0, pauseIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        Intent nextIntent = new Intent(this, NotificationReciever.class).setAction(ACTION_NEXT);
-        PendingIntent nextPending;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            nextPending = PendingIntent.getBroadcast(this,0, nextIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP),PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
-        }else {
-            nextPending = PendingIntent.getBroadcast(this,0, nextIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), PendingIntent.FLAG_UPDATE_CURRENT);
-        }
-//        PendingIntent nextPending = PendingIntent.getBroadcast(this, 0, nextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        byte[] picture = null;
-        picture = getAlbumArt(songData.get(position).getPath());
-
-        Bitmap thumb = null;
-        if (picture != null) {
-            thumb = BitmapFactory.decodeByteArray(picture, 0, picture.length);
-        } else {
-            thumb = BitmapFactory.decodeResource(getResources(), R.drawable.playlist);
-        }
-
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID_2)
-                .setSmallIcon(playPauseBtn)
-                .setLargeIcon(thumb)
-                .setContentTitle(songData.get(position).getTitle())
-                .setContentText(songData.get(position).getArtist())
-                .addAction(R.drawable.previous, "Previous", prevPending)
-                .addAction(playPauseBtn, "Pause", pausePending)
-                .addAction(R.drawable.next, "Next", nextPending)
-                .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
-                        .setMediaSession(mediaSessionCompat.getSessionToken()))
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setOnlyAlertOnce(true)
-                .build();
-
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify(0, notification);
-    }
-
-    private byte[] getAlbumArt(String uri) {
-        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-        retriever.setDataSource(uri);
-
-        byte[] art = retriever.getEmbeddedPicture();
-        retriever.release();
-        return art;
     }
 }
