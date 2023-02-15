@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,7 +30,9 @@ import com.redemption.music.PlayerActivity;
 import com.redemption.music.R;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> {
 

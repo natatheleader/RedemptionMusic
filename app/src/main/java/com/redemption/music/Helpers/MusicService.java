@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class MusicService extends Service implements MediaPlayer.OnCompletionListener {
 
-    MyBinder myBinder = new MyBinder();
+    IBinder myBinder = new MyBinder();
     MediaPlayer mediaPlayer;
     ArrayList<SongData> songData = new ArrayList<>();
 
@@ -32,7 +32,6 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
     @Override
     public void onCreate() {
         super.onCreate();
-
     }
 
     @Nullable
