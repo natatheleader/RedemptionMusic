@@ -31,6 +31,7 @@ import com.redemption.music.R;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -149,12 +150,16 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
     }
 
     private byte[] getAlbumArt(String uri) {
-        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-        retriever.setDataSource(uri);
+        try {
+            MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+            retriever.setDataSource(uri);
 
-        byte[] art = retriever.getEmbeddedPicture();
-        retriever.release();
-        return art;
+            byte[] art = retriever.getEmbeddedPicture();
+            retriever.release();
+            return art;
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     public void updateList (ArrayList<SongData> songDataFiltered) {

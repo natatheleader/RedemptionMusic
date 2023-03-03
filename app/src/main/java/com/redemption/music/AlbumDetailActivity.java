@@ -66,10 +66,15 @@ public class AlbumDetailActivity extends AppCompatActivity {
     }
 
     private byte[] getAlbumArt(String uri) {
-        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-        retriever.setDataSource(uri);
-        byte[] art = retriever.getEmbeddedPicture();
-        retriever.release();
-        return art;
+        try {
+            MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+            retriever.setDataSource(uri);
+
+            byte[] art = retriever.getEmbeddedPicture();
+            retriever.release();
+            return art;
+        } catch (Exception ex) {
+            return null;
+        }
     }
 }

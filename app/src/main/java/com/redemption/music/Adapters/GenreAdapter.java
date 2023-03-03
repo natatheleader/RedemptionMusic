@@ -92,11 +92,15 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.ViewHolder> 
     }
 
     private byte[] getAlbumArt(String uri) {
-        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-        retriever.setDataSource(uri);
+        try {
+            MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+            retriever.setDataSource(uri);
 
-        byte[] art = retriever.getEmbeddedPicture();
-        retriever.release();
-        return art;
+            byte[] art = retriever.getEmbeddedPicture();
+            retriever.release();
+            return art;
+        } catch (Exception ex) {
+            return null;
+        }
     }
 }
